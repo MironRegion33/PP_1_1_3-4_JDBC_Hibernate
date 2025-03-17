@@ -1,27 +1,29 @@
 package jm.task.core.jdbc;
 
-import jm.task.core.jdbc.service.UserService;
-import jm.task.core.jdbc.service.UserServiceImpl;
-import jm.task.core.jdbc.util.Util;
+import jm.task.core.jdbc.dao.UserDao;
+import jm.task.core.jdbc.dao.UserDaoHibernateImpl;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 
 public class Main {
     public static void main(String[] args) {
 
-        UserService userService = new UserServiceImpl();
+        UserDaoHibernateImpl userDao = new UserDaoHibernateImpl();
+//        userDao.createUsersTable();
+//        userDao.saveUser("Dima", "Mironov",  (byte)36);
+//        userDao.saveUser("Valera", "Churlyaev",  (byte)28);
+//        userDao.saveUser("Leo", "Messi",  (byte)37);
+//        userDao.saveUser("Alex", "Ovechkin",  (byte)39);
+//        userDao.removeUserById(1);
+        //userDao.getAllUsers();
+        //userDao.cleanUsersTable();
+        //userDao.dropUsersTable();
 
-
-        userService.createUsersTable();
-        userService.saveUser("Dima", "Mir", (byte) 36);
-        userService.saveUser("Valera", "Chur", (byte) 28);
-        userService.saveUser("Leo", "Messi", (byte) 36);
-        userService.saveUser("Alex", "Ovechkin", (byte) 38);
-        userService.getAllUsers();
-        userService.cleanUsersTable();
-        userService.dropUsersTable();
-
+        userDao.dropUsersTable();
+        userDao.createUsersTable();
+        userDao.saveUser("Dima", "Mironov",  (byte)36);
+        userDao.saveUser("Valera", "Churlyaev",  (byte)28);
+        userDao.saveUser("Leo", "Messi",  (byte)37);
+        userDao.saveUser("Alex", "Ovechkin",  (byte)39);
+        userDao.getAllUsers();
     }
 }
