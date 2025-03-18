@@ -14,29 +14,17 @@ import static jm.task.core.jdbc.util.Util.getMyConnection;
 
 public class UserDaoJDBCImpl implements UserDao {
 
-
-    private static final String CREATE = """
-                        CREATE TABLE IF NOT EXISTS user (
-                            id INTEGER AUTO_INCREMENT PRIMARY KEY,
-                            name VARCHAR(255),
-                            last_name VARCHAR(255),
-                            age TINYINT
-                        )
-            """;
-    private static final String GET_USERS = """
-                        SELECT *
-                        FROM user
-            """;
-    private static final String DELETE = """
-            DELETE FROM user
-            WHERE id = ?
-            """;
-
-
     public void createUsersTable() {
 
         try (Connection connection = Util.getMyConnection();
-             PreparedStatement statement = connection.prepareStatement(CREATE)) {
+             PreparedStatement statement = connection.prepareStatement("""
+                                 CREATE TABLE IF NOT EXISTS user (
+                                     id BIGINT AUTO_INCREMENT PRIMARY KEY,
+                                     name VARCHAR(255),
+                                     last_name VARCHAR(255),
+                                     age TINYINT
+                                 )
+                     """)) {
             statement.executeUpdate();
         } catch (SQLException ignored) {
         }
@@ -71,8 +59,12 @@ public class UserDaoJDBCImpl implements UserDao {
     public void removeUserById(long id) {
 
         try (Connection connection = getMyConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(DELETE)) {
+             PreparedStatement preparedStatement = connection.prepareStatement("""
+                     DELETE FROM user
+                     WHERE id = ?
+                     """)) {
             preparedStatement.setLong(1, id);
+            preparedStatement.executeUpdate();
             System.out.println("User с id - " + id + " удален из базы данных");
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -83,7 +75,10 @@ public class UserDaoJDBCImpl implements UserDao {
 
         List<User> users = new ArrayList<>();
         try (Connection connection = getMyConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(GET_USERS);
+             PreparedStatement preparedStatement = connection.prepareStatement("""
+                                 SELECT *
+                                 FROM user
+                     """);
              ResultSet resultSet = preparedStatement.executeQuery()) {
             while (resultSet.next()) {
                 User user = new User(resultSet.getString("name"),
