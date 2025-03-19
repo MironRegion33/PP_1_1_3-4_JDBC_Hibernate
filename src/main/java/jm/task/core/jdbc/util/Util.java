@@ -6,9 +6,9 @@ import java.sql.SQLException;
 
 public final class Util {
 
-    private static final String URL = "jdbc:mysql://localhost:3302/mydatabase";
-    private static final String USERNAME = "myuser";
-    private static final String PASSWORD = "mypassword";
+    static final String URL = "jdbc:mysql://localhost:3302/mydatabase";
+    static final String USERNAME = "myuser";
+    static final String PASSWORD = "mypassword";
 
     public static void loadDriver() {
         try {
