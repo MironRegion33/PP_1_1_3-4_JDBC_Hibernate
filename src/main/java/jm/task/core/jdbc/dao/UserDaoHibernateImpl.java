@@ -5,15 +5,8 @@ import jm.task.core.jdbc.util.Util;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.List;
-
-import static jm.task.core.jdbc.util.Util.getMyConnection;
 
 public class UserDaoHibernateImpl implements UserDao {
     public UserDaoHibernateImpl() {
@@ -25,20 +18,18 @@ public class UserDaoHibernateImpl implements UserDao {
     @Override
     public void createUsersTable() {
 
-
         try (Session session = sessionFactory.getCurrentSession()) {
             session.beginTransaction();
             session.createNativeQuery("""
                                     CREATE TABLE IF NOT EXISTS user (
-                                    id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                                    id BIGINT AUTO_INCREMENT PRIMARY KEY,
                                     name VARCHAR(255),
                                     last_name VARCHAR(255),
                                     age TINYINT
                             )""")
                     .executeUpdate();
             session.getTransaction().commit();
-
-            //System.out.println("Table created");
+            System.out.println("Table created");
         } catch (HibernateException ignored) {
         }
     }
@@ -51,9 +42,8 @@ public class UserDaoHibernateImpl implements UserDao {
             session.createNativeQuery("DROP TABLE IF EXISTS user")
                     .executeUpdate();
             session.getTransaction().commit();
-            //System.out.println("Table dropped");
+            System.out.println("Table dropped");
         } catch (HibernateException ignored) {
-
         }
     }
 
@@ -85,7 +75,6 @@ public class UserDaoHibernateImpl implements UserDao {
 
     @Override
     public List<User> getAllUsers() {
-
 
         try (Session session = sessionFactory.getCurrentSession()) {
             session.beginTransaction();

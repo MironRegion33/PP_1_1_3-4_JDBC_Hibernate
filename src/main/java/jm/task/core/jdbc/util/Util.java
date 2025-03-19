@@ -3,25 +3,17 @@ package jm.task.core.jdbc.util;
 import jm.task.core.jdbc.model.User;
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
-import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.cfg.Environment;
-import org.hibernate.service.Service;
 import org.hibernate.service.ServiceRegistry;
-
-import java.security.Provider;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 
 public final class Util {
 
-    private static volatile Util INSTANCE = null;
-    private static final String URL = "jdbc:mysql://localhost:3302/mydatabase";
-    private static final String USERNAME = "myuser";
-    private static final String PASSWORD = "mypassword";
-    private static SessionFactory sessionFactory;
+    static volatile Util INSTANCE = null;
+    static final String URL = "jdbc:mysql://localhost:3302/mydatabase";
+    static final String USERNAME = "myuser";
+    static final String PASSWORD = "mypassword";
+    static SessionFactory sessionFactory;
 
     public static Util getInstance() {
         if (INSTANCE == null) {
@@ -34,28 +26,7 @@ public final class Util {
         return INSTANCE;
     }
 
-    static {
-        loadDriver();
-    }
-
-    private static void loadDriver() {
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     private Util() {
-    }
-
-    public static Connection getMyConnection() {
-
-        try {
-            return DriverManager.getConnection(URL, USERNAME, PASSWORD);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     public SessionFactory getMySessionFactory() {
